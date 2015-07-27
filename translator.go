@@ -146,9 +146,39 @@ func ReadFile() {
 	}
 }
 
+type CodeWriter struct {
+	outputFilename string
+}
+
+func NewCodeWriter(outputFilename string) *CodeWriter {
+	c := new(CodeWriter)
+	c.outputFilename = outputFilename
+	return c
+}
+
+func (c *CodeWriter) SetFileName(filename string) {
+
+}
+
+func (c *CodeWriter) WriteArithmetic(command string) {
+
+}
+
+func (c *CodeWriter) WritePushPop(command CommandType, segment string, index int) {
+
+}
+
+func (c *CodeWriter) Close() {
+
+}
+
 func main() {
-	filename := "BasicTest.vm"
-	parser := NewParser(filename)
+	inputFilename := "BasicTest.vm"
+	outputFilename := "Prog.asm"
+
+	parser := NewParser(inputFilename)
+	codeWriter := NewCodeWriter(outputFilename)
+
 	for parser.HasMoreCommands() {
 		parser.Advance()
 		parser.CurrentCommandType = parser.CommandType()
