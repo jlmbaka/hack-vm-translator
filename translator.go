@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 type CommandType int
@@ -56,13 +57,49 @@ func (p *Parser) HasMoreCommands() bool {
 // Should be called only if `HasMoreCommands()` is true.
 // Initially, there is no current cmdS
 func (p *Parser) Advance() {
-	p.CurrentCommand = p.Scanner.Text()
-
+	for {
+		token := strings.TrimSpace(p.Scanner.Text())
+		if len(token) > 0 {
+			p.CurrentCommand = token
+			return
+		}
+		p.Scanner.Scan() // Advance to next token
+	}
 }
 
 // Returns the type of the current cmd.
 func (p *Parser) CommandType() CommandType {
-	return CArithmetic
+	tokens := strings.Fields(p.CurrentCommand)
+	switch tokens[0] {
+	case "add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not":
+		fmt.Println("COMMAND TYPE C_ARITHMETIC: ", p.CurrentCommand)
+		return CArithmetic
+	case "push":
+		fmt.Println("COMMAND TYPE C_PUSH: ", p.CurrentCommand)
+		return CPush
+	case "pop":
+		fmt.Println("COMMAND TYPE C_POP: ", p.CurrentCommand)
+		return CPop
+	case "label":
+		fmt.Println("COMMAND TYPE C_LABEL: ", p.CurrentCommand)
+		return CLabel
+	case "goto":
+		fmt.Println("COMMAND TYPE C_GOTO: ", p.CurrentCommand)
+		return CGoto
+	case "if":
+		fmt.Println("COMMAND TYPE C_IF: ", p.CurrentCommand)
+		return CIf
+	case "function":
+		fmt.Println("COMMAND TYPE C_Function: ", p.CurrentCommand)
+		return CFunction
+	case "call":
+		fmt.Println("COMMAND TYPE C_POP: ", p.CurrentCommand)
+		return CCall
+	case "return":
+		fmt.Println("COMMAND TYPE C_POP: ", p.CurrentCommand)
+		return CReturn
+	}
+	return -1
 }
 
 // Returns the first argument of the current cmd.
@@ -99,6 +136,9 @@ func main() {
 	for parser.HasMoreCommands() {
 		parser.Advance()
 		parser.CommandType()
+		parser.Arg1()
+		parser.Arg2()
 		fmt.Println(parser.CurrentCommand)
+		fmt.Println("")
 	}
 }
