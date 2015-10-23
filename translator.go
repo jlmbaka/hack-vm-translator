@@ -36,7 +36,7 @@ type Parser struct {
 	Scanner            *bufio.Scanner
 }
 
-// Opens the input fiel and gets ready to parse it.
+// Opens the input file and gets ready to parse it.
 func NewParser(filename string) *Parser {
 	p := new(Parser)
 	p.InputFile = filename
@@ -49,7 +49,6 @@ func NewParser(filename string) *Parser {
 	return p
 }
 
-// Are there more commmands in the input
 func (p *Parser) HasMoreCommands() bool {
 	return p.Scanner.Scan()
 }
@@ -72,7 +71,7 @@ func (p *Parser) Advance() {
 }
 
 func isComment(str string) bool {
-	return strings.Index(str, "//") == 0
+	return strings.Index(strings.TrimSpace(str), "//") == 0
 }
 
 // Returns the type of the current cmd.
@@ -173,11 +172,11 @@ func (c *CodeWriter) Close() {
 }
 
 func main() {
-	inputFilename := "BasicTest.vm"
-	outputFilename := "Prog.asm"
+	inputFilename := os.Args[1]
+	// outputFilename := "Prog.asm"
 
 	parser := NewParser(inputFilename)
-	codeWriter := NewCodeWriter(outputFilename)
+	// codeWriter := NewCodeWriter(outputFilename)
 
 	for parser.HasMoreCommands() {
 		parser.Advance()
