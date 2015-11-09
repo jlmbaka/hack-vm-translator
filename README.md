@@ -2,7 +2,7 @@
 VM Translator for the Hack platform
 
 
-The Hack VM translator accept a single item as a command line parameter, `AAA`, where AAA is either a filename with a `.vm` extension containing a VM program or the name of a directory containing one or more `.vm` files.
+The Hack VM translator accepts a single item as a command line parameter, `AAA`, where AAA is either a filename with a `.vm` extension containing a VM program or the name of a directory containing one or more `.vm` files.
 
 ```console
 prompt>translator XXX
